@@ -1,24 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Top Videos Search</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Top Videos Search</h1>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Enter keyword to search...">
-            <button id="search-button">Search</button>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-youtube logo-icon"></i>
+                    <span class="logo-text">YouTube Top Videos</span>
+                </div>
+                <div class="theme-toggle" id="theme-toggle">
+                    <div class="theme-icons">
+                        <i class="fas fa-sun theme-icon"></i>
+                        <i class="fas fa-moon theme-icon"></i>
+                    </div>
+                    <div class="theme-toggle-circle"></div>
+                </div>
+            </div>
         </div>
-        <div class="results-info">
-            <p>Showing top 20 videos with most views posted today for your search</p>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Find Today's Top YouTube Videos</h1>
+            
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Enter keyword to search...">
+                    <button id="search-button">
+                        <i class="fas fa-search search-icon"></i>
+                        <span class="search-button-text">Search</span>
+                    </button>
+                </div>
+            </div>
+            
+            <button class="toggle-filters" id="toggle-filters">
+                Advanced Filters <i class="fas fa-chevron-down toggle-filters-icon"></i>
+            </button>
+            
+            <div class="filters-container" id="filters-container">
+                <div class="filters-content">
+                    <div class="filters-header">
+                        <span class="filters-title">Filter Results</span>
+                        <button class="filters-reset" id="reset-filters">Reset Filters</button>
+                    </div>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label" for="date-filter">Date</label>
+                            <select class="filter-select" id="date-filter">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="duration-filter">Duration</label>
+                            <select class="filter-select" id="duration-filter">
+                                <option value="any">Any</option>
+                                <option value="short">Short (< 4 min)</option>
+                                <option value="medium">Medium (4-20 min)</option>
+                                <option value="long">Long (> 20 min)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="definition-filter">Definition</label>
+                            <select class="filter-select" id="definition-filter">
+                                <option value="any">Any</option>
+                                <option value="high">HD</option>
+                                <option value="standard">SD</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="caption-filter">Captions</label>
+                            <select class="filter-select" id="caption-filter">
+                                <option value="any">Any</option>
+                                <option value="true">With Captions</option>
+                                <option value="false">Without Captions</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="favorites-container" id="favorites-container">
+                <div class="favorites-header">
+                    <span class="favorites-title">Saved Searches</span>
+                </div>
+                <div class="favorites-list" id="favorites-list">
+                    <!-- Favorite searches will be added here dynamically -->
+                </div>
+            </div>
+            
+            <div class="results-info">
+                <p>Showing top videos with most views based on your search</p>
+            </div>
+            
+            <div class="results-stats" id="results-stats">
+                <div class="results-count">0 results found</div>
+                <div class="results-sort">
+                    <span class="sort-label">Sort by:</span>
+                    <select class="sort-select" id="sort-select">
+                        <option value="views">Most Views</option>
+                        <option value="date">Newest First</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="results-container"></div>
+            
+            <div id="loading" class="hidden">
+                <div class="loading-spinner"></div>
+                <div>Searching for top videos...</div>
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- Pagination buttons will be added here dynamically -->
+            </div>
         </div>
-        <div id="results-container"></div>
-        <div id="loading" class="hidden">Loading...</div>
+    </main>
+    
+    <div class="statistics-modal" id="statistics-modal">
+        <div class="statistics-content">
+            <button class="close-modal" id="close-modal">×</button>
+            <div class="statistics-header">
+                <div class="statistics-title">Video Statistics</div>
+                <div class="statistics-subtitle">Detailed analytics for this video</div>
+            </div>
+            <div class="statistics-chart" id="statistics-chart">
+                <!-- Chart will be rendered here -->
+            </div>
+            <div class="statistics-details">
+                <div class="statistics-item">
+                    <div class="statistics-value" id="stat-views">0</div>
+                    <div class="statistics-label">Total Views</div>
+                </div>
+                <div class="statistics-item">
+                    <div class="statistics-value" id="stat-likes">0</div>
+                    <div class="statistics-label">Likes</div>
+                </div>
+                <div class="statistics-item">
+                    <div class="statistics-value" id="stat-comments">0</div>
+                    <div class="statistics-label">Comments</div>
+                </div>
+                <div class="statistics-item">
+                    <div class="statistics-value" id="stat-duration">0:00</div>
+                    <div class="statistics-label">Duration</div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <footer>
+        <div class="container">
+            <p class="footer-text">
+                YouTube Top Videos Search | Created with <i class="fas fa-heart" style="color: var(--accent-color);"></i> | 
+                <a href="https://github.com/tfs2006/youtube-top-videos-search" class="footer-link" target="_blank">View on GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
 </body>
